@@ -99,34 +99,6 @@ After a round, `GameResult` displays:
 
 ---
 
-## Project Structure (key parts)
-
-```
-src/
-  app/                      # Next.js routes/pages
-  components/
-    game/                   # GameContainer, CharacterDisplay, GameResult, Timer, ProgressIndicator
-    history/                # HistoryList
-    leaderboard/            # LeaderboardTable, BestScoreHighlight
-    dashboard/              # Home page stat cards
-    shared/                 # Shared small UI (KeyboardShortcutHint, etc.)
-    ui/                     # shadcn/ui primitives
-  hooks/
-    useGame.ts              # Core typing game state machine
-    useAuth.ts / AuthContext
-    useBestScore.ts
-    useGameHistory.ts
-    useLeaderboard.ts
-    useSubmitGameResult.ts
-  context/
-    AuthContext.tsx
-  types/
-    index.ts                # Shared TS types (GameResult, LeaderboardEntry, etc.)
-    constants.ts             # TOTAL_CHARS, PENALTY_MS_PER_WRONG
-  proxy.ts                  # Route protection
-next.config.ts               # Rewrites proxying backend auth/GraphQL through same origin
-```
-
 
 ---
 ## Getting Started
