@@ -1,4 +1,5 @@
-### Backend Repository: <a href="https://github.com/Jubaid-Islam/TypoPulse-Backend" target="_blank" rel="noopener noreferrer">https://github.com/Jubaid-Islam/TypoPulse-Backend</a>
+### Backend Repository : https://github.com/Jubaid-Islam/TypoPulse-Backend
+
 ---
 
 # TypoPulse — Frontend
