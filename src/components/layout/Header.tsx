@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import { FiMenu } from "react-icons/fi";
@@ -74,7 +74,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   "relative px-3 py-2 text-sm font-medium rounded-md transition-colors",
                   isActive
                     ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
                 )}
               >
                 {link.label}
@@ -109,12 +109,24 @@ export function Header({ onMenuClick }: HeaderProps) {
             </div>
           ) : (
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <Button asChild variant="ghost" size="sm" className="h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-3">
-                <Link href="/login">Login</Link>
-              </Button>
-              <Button asChild size="sm" className="h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-3 shadow-sm">
-                <Link href="/register">Register</Link>
-              </Button>
+              <Link
+                href="/login"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "sm" }),
+                  "h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-3",
+                )}
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className={cn(
+                  buttonVariants({ size: "sm" }),
+                  "h-8 sm:h-9 text-xs sm:text-sm px-2.5 sm:px-3 shadow-sm",
+                )}
+              >
+                Register
+              </Link>
             </div>
           )}
         </div>
