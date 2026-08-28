@@ -118,43 +118,72 @@ src/
   types/
     index.ts                # Shared TS types (GameResult, LeaderboardEntry, etc.)
     constants.ts             # TOTAL_CHARS, PENALTY_MS_PER_WRONG
-  middleware.ts              # Route protection (auth-gated pages)
+  proxy.ts                  # Route protection
 next.config.ts               # Rewrites proxying backend auth/GraphQL through same origin
 ```
 
----
-
-## Environment Variables
-
-| Variable | Description |
-|---|---|
-| `BACKEND_URL` | Base URL of the deployed backend (used by `next.config.ts` rewrites) |
-| `NEXT_PUBLIC_API_URL` | Public-facing API base (if used directly by any client-side calls) |
 
 ---
-
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (v18 or higher) or Bun installed
+- A running instance of the backend server
+- PostgreSQL database configured for the backend
+
+### 1. Installation
+
+Clone the repository and install the dependencies:
+
 ```bash
-bun install
-bun run dev
+npm install
 ```
 
-App runs at `http://localhost:3000` by default. Make sure a backend instance is reachable at the URL configured in `BACKEND_URL`.
+### 2. Environment Configuration
 
-### Build
+Create a `.env.local` file in the root directory of the frontend project:
+
+```env
+NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
+NEXT_PUBLIC_API_URL=http://localhost:4000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+> **Note:** The frontend runs on port `3000`, while the backend runs on port `4000`.
+>
+> If your backend is running on a different port or URL, update the environment variables accordingly.
+
+### 3. Running the Development Server
+
+Start the local development server:
 
 ```bash
-bun run build
-bun run start
+npm run dev
 ```
+
+The frontend will be available at:
+
+**http://localhost:3000**
+
+The backend GraphQL API will be available at:
+
+**http://localhost:3000/graphql**
+
+### 4. Production Build
+
+To create and run an optimized production build locally:
+
+```bash
+# Build the application
+npm run build
+
+# Start the production server
+npm run start
+```
+
+> **Note:** The production server port depends on your Next.js configuration and environment settings.
+
+
 
 ---
-
-## Notes on Cross-Origin Auth
-
-Because the frontend (`*.vercel.app`) and backend (`*.vercel.app`, different project) are on different domains, cookies set directly by the backend would not be visible to the frontend's own origin. To work around this without a custom shared domain, `next.config.ts` rewrites `/api/auth/*` and `/graphql` requests through the frontend's own origin, so:
-
-- The browser only ever talks to `typopulse-frontend.vercel.app`
-- Next.js forwards those specific requests server-side to the backend
-- The `Set-Cookie` response is seen by the browser as coming from the frontend's own origin, so the session cookie is stored correctly and sent on subsequent requests (including by `middleware.ts` for route protection)
