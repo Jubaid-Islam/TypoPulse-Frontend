@@ -110,7 +110,7 @@ export function RegisterForm() {
             </p>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
+        <CardFooter className="flex flex-col gap-4 mt-10">
           <Button
             type="submit"
             className="w-full h-10 font-semibold"

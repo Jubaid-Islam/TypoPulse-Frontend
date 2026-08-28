@@ -96,7 +96,7 @@ export function LoginForm() {
             </p>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
+        <CardFooter className="flex flex-col gap-4 mt-10">
           <Button type="submit" className="w-full h-10 font-semibold" disabled={isLoading}>
             {isLoading && <CgSpinner className="mr-2 h-4 w-4 animate-spin" />}
             Login
