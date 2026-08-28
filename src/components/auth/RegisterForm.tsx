@@ -94,12 +94,12 @@ export function RegisterForm() {
               <Input
                 id="password"
                 type="password"
-                placeholder="Min 6 characters"
+                placeholder="Min 8 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pl-10 h-10"
                 required
-                minLength={6}
+                minLength={8}
                 disabled={isLoading}
               />
             </div>
