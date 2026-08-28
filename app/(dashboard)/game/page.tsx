@@ -1,4 +1,3 @@
-// Game page
 "use client";
 
 import { useState } from "react";
@@ -7,19 +6,23 @@ import { GameContainer } from "@/components/game/GameContainer";
 import { GameResult } from "@/components/game/GameResult";
 import { GameCompleteResult } from "@/types";
 import { useBestScore } from "@/hooks/useBestScore";
+import { PENALTY_MS_PER_WRONG } from "@/types/constants";
 
 export default function GamePage() {
   const router = useRouter();
 
   const { bestScore } = useBestScore();
   const [gameResult, setGameResult] = useState<GameCompleteResult | null>(null);
+  const [previousBestMs, setPreviousBestMs] = useState<number | undefined>(undefined);
 
-  const handleGameComplete = async (result: GameCompleteResult) => {
+  const handleGameComplete = (result: GameCompleteResult, prevBestMs?: number) => {
     setGameResult(result);
+    setPreviousBestMs(prevBestMs);
   };
 
   const handlePlayAgain = () => {
     setGameResult(null);
+    setPreviousBestMs(undefined);
   };
 
   const handleViewLeaderboard = () => {
@@ -28,15 +31,21 @@ export default function GamePage() {
 
   if (gameResult) {
     const accuracy =
-      (gameResult.correctChars / (gameResult.correctChars + gameResult.wrongAttempts)) * 100;
+      (gameResult.correctChars /
+        (gameResult.correctChars + gameResult.wrongAttempts)) *
+      100;
+
+    const penaltyMs = gameResult.wrongAttempts * PENALTY_MS_PER_WRONG;
+    const totalTimeMs = gameResult.rawTimeMs + penaltyMs;
+
     return (
       <div className="py-8">
         <GameResult
-          totalTimeMs={gameResult.rawTimeMs}
+          totalTimeMs={totalTimeMs}
           correctChars={gameResult.correctChars}
           wrongAttempts={gameResult.wrongAttempts}
           accuracy={accuracy}
-          previousBestMs={bestScore?.totalTimeMs}
+          previousBestMs={previousBestMs}
           onPlayAgain={handlePlayAgain}
           onViewLeaderboard={handleViewLeaderboard}
         />
@@ -44,5 +53,10 @@ export default function GamePage() {
     );
   }
 
-  return <GameContainer onComplete={handleGameComplete} />;
+  return (
+    <GameContainer
+      onComplete={handleGameComplete}
+      previousBestMs={bestScore?.totalTimeMs}
+    />
+  );
 }

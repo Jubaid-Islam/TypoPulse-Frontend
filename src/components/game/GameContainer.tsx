@@ -9,24 +9,26 @@ import { ProgressIndicator } from "./ProgressIndicator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { KeyboardShortcutHint } from "@/components/shared";
-import { FiPlay, FiRefreshCw } from "react-icons/fi";
+import { FiPlay } from "react-icons/fi";
 import { useSubmitGameResult } from "@/hooks/useSubmitGameResult";
 import { useAuth } from "@/context/AuthContext";
 
 interface GameContainerProps {
-  onComplete?: (result: GameCompleteResult) => void;
+  previousBestMs?: number;
+  onComplete?: (result: GameCompleteResult, previousBestMs?: number) => void;
 }
 
-export function GameContainer({ onComplete }: GameContainerProps) {
+export function GameContainer({ onComplete, previousBestMs }: GameContainerProps) {
   const { user } = useAuth();
   const { submitResult } = useSubmitGameResult();
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const previousBestSnapshotRef = useRef<number | undefined>(previousBestMs);
 
   const handleGameComplete = async (result: GameCompleteResult) => {
     if (user) {
       await submitResult(result);
     }
-    onComplete?.(result);
+    onComplete?.(result, previousBestSnapshotRef.current);
   };
 
   const {
@@ -39,20 +41,13 @@ export function GameContainer({ onComplete }: GameContainerProps) {
     timeMs,
     isWrongFlash,
     startGame,
-    resetGame,
     handleKeyPress,
     totalChars,
   } = useGame({ onComplete: handleGameComplete });
 
   const handleStartGame = () => {
+    previousBestSnapshotRef.current = previousBestMs;
     startGame();
-    setTimeout(() => {
-      mobileInputRef.current?.focus();
-    }, 50);
-  };
-
-  const handleResetGame = () => {
-    resetGame();
     setTimeout(() => {
       mobileInputRef.current?.focus();
     }, 50);
@@ -70,7 +65,6 @@ export function GameContainer({ onComplete }: GameContainerProps) {
       const lastChar = value.slice(-1);
       handleKeyPress(lastChar.toLowerCase());
     }
-    // Clear input so it can receive new keys
     e.target.value = "";
   };
 
@@ -87,7 +81,6 @@ export function GameContainer({ onComplete }: GameContainerProps) {
         onClick={handleContainerClick}
       >
         <CardContent className="p-4 sm:p-6 md:p-8 space-y-6">
-          {/* Hidden input to capture mobile on-screen keyboard input */}
           <input
             ref={mobileInputRef}
             type="text"
@@ -101,7 +94,6 @@ export function GameContainer({ onComplete }: GameContainerProps) {
             aria-label="Typing input for mobile and screen readers"
           />
 
-          {/* Timer & Stats Header */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
             <Timer timeMs={timeMs} />
             <div className="flex items-center gap-3 text-xs sm:text-sm font-medium">
@@ -109,12 +101,11 @@ export function GameContainer({ onComplete }: GameContainerProps) {
                 Correct: {correctChars}
               </span>
               <span className=" px-2.5 py-1 rounded-md">
-                Mistakes: <span className="text-red-400">{wrongAttempts}</span> 
+                Mistakes: <span className="text-red-400">{wrongAttempts}</span>
               </span>
             </div>
           </div>
 
-          {/* Character Display Grid */}
           <div className="py-2">
             <CharacterDisplay
               chars={chars}
@@ -124,10 +115,8 @@ export function GameContainer({ onComplete }: GameContainerProps) {
             />
           </div>
 
-          {/* Progress Indicator */}
           <ProgressIndicator current={currentIndex} total={totalChars} />
 
-          {/* Controls & Shortcuts */}
           <div className="flex flex-col gap-4 pt-2">
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               {!isPlaying && !isComplete && (
@@ -138,17 +127,6 @@ export function GameContainer({ onComplete }: GameContainerProps) {
                 >
                   <FiPlay className="h-4 w-4" />
                   Start Game
-                </Button>
-              )}
-              {(isComplete || !isPlaying) && (
-                <Button
-                  onClick={handleResetGame}
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto gap-2 font-medium"
-                >
-                  <FiRefreshCw className="h-4 w-4" />
-                  Play Again
                 </Button>
               )}
             </div>
