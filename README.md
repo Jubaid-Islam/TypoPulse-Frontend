@@ -1,6 +1,11 @@
+### Backend Repository : https://github.com/Jubaid-Islam/TypoPulse-Backend
+
+---
+
 # TypoPulse — Frontend
 
 TypoPulse is a typing precision game: type 20 random lowercase letters as fast and accurately as possible. Every mistake adds a time penalty, so accuracy matters as much as raw speed.
+
 
 ## Tech Stack
 
