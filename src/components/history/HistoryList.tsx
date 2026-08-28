@@ -17,18 +17,9 @@ export function HistoryList({ history, isLoading = false }: HistoryListProps) {
     return seconds.toFixed(2) + "s";
   };
 
-  const formatDate = (dateValue: string | number | null | undefined) => {
-    if (!dateValue) return "Unknown date";
-
-    let date: Date;
-    if (typeof dateValue === "number") {
-      date = new Date(dateValue);
-    } else if (!isNaN(Number(dateValue)) && !isNaN(parseFloat(dateValue))) {
-      date = new Date(Number(dateValue));
-    } else {
-      date = new Date(dateValue);
-    }
-
+  const formatDate = (dateStr: string | null | undefined) => {
+    if (!dateStr) return "Unknown date";
+    const date = new Date(dateStr);
     if (isNaN(date.getTime())) return "Unknown date";
     return date.toLocaleDateString("en-US", {
       month: "short",
@@ -48,9 +39,9 @@ export function HistoryList({ history, isLoading = false }: HistoryListProps) {
   if (history.length === 0) {
     return (
       <Card className="border-dashed">
-        <CardContent className="flex h-48 flex-col items-center justify-center gap-1 text-muted-foreground text-center p-4">
-          <p className="font-semibold text-foreground">No games played yet</p>
-          <p className="text-xs sm:text-sm">Start a challenge to see your history here</p>
+        <CardContent className="flex h-48 flex-col items-center justify-center gap-1 text-muted-foreground">
+          <p className="font-medium">No games played yet</p>
+          <p className="text-sm">Start a challenge to see your history here</p>
         </CardContent>
       </Card>
     );
@@ -58,59 +49,52 @@ export function HistoryList({ history, isLoading = false }: HistoryListProps) {
 
   const bestTimeMs = Math.min(...history.map((r) => r.totalTimeMs));
 
+  // Pin the best-time entry to the top; keep everything else in the
+  // order it was given (typically most-recent-first from the API).
+  const bestEntry = history.find((r) => r.totalTimeMs === bestTimeMs);
+  const restEntries = history.filter((r) => r !== bestEntry);
+  const orderedHistory = bestEntry ? [bestEntry, ...restEntries] : history;
+
   return (
     <div className="space-y-3">
-      {history.map((result) => {
+      {orderedHistory.map((result) => {
         const isBest = result.totalTimeMs === bestTimeMs;
         return (
-          <Card
-            key={result.id}
-            className={
-              isBest
-                ? "border-primary/50 shadow-sm bg-primary/[0.02]"
-                : "border-border/60"
-            }
-          >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 sm:p-4 pb-2 sm:pb-3">
-              <CardTitle className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-muted-foreground">
-                <FiCalendar className="h-3.5 w-3.5 text-primary" />
+          <Card key={result.id} className={isBest ? "border-primary/40" : undefined}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <FiCalendar className="h-3.5 w-3.5" />
                 {formatDate(result.createdAt)}
               </CardTitle>
               {isBest && (
-                <Badge className="gap-1 bg-white text-black text-[10px] sm:text-xs">
-                  <FaTrophy className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                <Badge className="gap-1">
+                  <FaTrophy className="h-3 w-3" />
                   Best
                 </Badge>
               )}
             </CardHeader>
-            <CardContent className="p-3 sm:p-4 pt-0">
-              <div className="grid grid-cols-3 divide-x rounded-lg border bg-muted/20">
-                <div className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3">
-                  <FaClock className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground" />
-                  <span className="font-mono text-sm sm:text-base font-bold tabular-nums">
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-3 divide-x rounded-md border">
+                <div className="flex flex-col items-center gap-1 py-3">
+                  <FaClock className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="font-mono text-base font-semibold tabular-nums">
                     {formatTime(result.totalTimeMs)}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                    Time
-                  </span>
+                  <span className="text-xs text-muted-foreground">Time</span>
                 </div>
-                <div className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3">
-                  <FiTarget className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground" />
-                  <span className="text-sm sm:text-base font-bold tabular-nums">
+                <div className="flex flex-col items-center gap-1 py-3">
+                  <FiTarget className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-base font-semibold tabular-nums">
                     {result.accuracy.toFixed(0)}%
                   </span>
-                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                    Accuracy
-                  </span>
+                  <span className="text-xs text-muted-foreground">Accuracy</span>
                 </div>
-                <div className="flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3">
-                  <FiAlertCircle className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-destructive" />
-                  <span className="text-sm sm:text-base font-bold tabular-nums text-destructive">
+                <div className="flex flex-col items-center gap-1 py-3">
+                  <FiAlertCircle className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-base font-semibold tabular-nums">
                     {result.wrongAttempts}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                    Mistakes
-                  </span>
+                  <span className="text-xs text-muted-foreground">Mistakes</span>
                 </div>
               </div>
             </CardContent>
