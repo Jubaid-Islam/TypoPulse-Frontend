@@ -13,9 +13,14 @@ export default function GamePage() {
 
   const { bestScore } = useBestScore();
   const [gameResult, setGameResult] = useState<GameCompleteResult | null>(null);
-  const [previousBestMs, setPreviousBestMs] = useState<number | undefined>(undefined);
+  const [previousBestMs, setPreviousBestMs] = useState<number | undefined>(
+    undefined,
+  );
 
-  const handleGameComplete = (result: GameCompleteResult, prevBestMs?: number) => {
+  const handleGameComplete = (
+    result: GameCompleteResult,
+    prevBestMs?: number,
+  ) => {
     setGameResult(result);
     setPreviousBestMs(prevBestMs);
   };

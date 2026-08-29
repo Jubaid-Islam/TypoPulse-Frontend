@@ -11,7 +11,7 @@ export const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          // Custom cache policie
+          // Custom cache policies
         },
       },
     },

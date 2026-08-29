@@ -1,4 +1,3 @@
-// Timer display
 "use client";
 
 import { FaTimes } from "react-icons/fa";

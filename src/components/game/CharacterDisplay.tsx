@@ -15,7 +15,7 @@ export function CharacterDisplay({
   isComplete,
   isWrongFlash = false,
 }: CharacterDisplayProps) {
-  // Placeholder sequence shown before the game starts (chars is empty)
+  // Placeholder sequence shown before the game starts 
   const displayChars =
     chars.length > 0 ? chars : "abcdefghijklmnopqrst".split("");
 

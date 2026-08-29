@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ReactNode, useState } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
-  // create a new QueryClient for each session to avoid shared state
+  // new QueryClient for each session to avoid shared state
   const [queryClient] = useState(
     () =>
       new QueryClient({

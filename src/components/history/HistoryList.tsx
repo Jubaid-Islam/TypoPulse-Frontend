@@ -49,8 +49,7 @@ export function HistoryList({ history, isLoading = false }: HistoryListProps) {
 
   const bestTimeMs = Math.min(...history.map((r) => r.totalTimeMs));
 
-  // Pin the best-time entry to the top; keep everything else in the
-  // order it was given (typically most-recent-first from the API).
+
   const bestEntry = history.find((r) => r.totalTimeMs === bestTimeMs);
   const restEntries = history.filter((r) => r !== bestEntry);
   const orderedHistory = bestEntry ? [bestEntry, ...restEntries] : history;
