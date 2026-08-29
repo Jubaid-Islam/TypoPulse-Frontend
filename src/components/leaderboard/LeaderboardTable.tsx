@@ -67,7 +67,7 @@ export function LeaderboardTable({
                   isTopThree && "bg-muted/30 font-medium"
                 )}
               >
-                <TableCell className="text-center px-2 sm:px-4">
+                <TableCell className="text-center p-4">
                   <div className="flex items-center justify-center">
                     {rank === 1 && (
                       <FaTrophy className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-500" />

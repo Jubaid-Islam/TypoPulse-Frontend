@@ -45,12 +45,13 @@ export function GameResult({
     : null;
 
   return (
-    <Card className="w-full max-w-2xl mx-auto overflow-hidden shadow-xl border-muted">
+   <div className="flex min-h-[70vh] items-center justify-center p-4">
+     <Card className="w-full mx-auto overflow-hidden shadow-xl border-muted">
       <CardHeader className="space-y-2 pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl sm:text-2xl font-bold">Game Results</CardTitle>
           {isNewBest ? (
-            <Badge className="gap-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">
+            <Badge className="gap-1  text-black font-semibold">
               <FaTrophy className="h-3 w-3" />
               New Best
             </Badge>
@@ -151,5 +152,6 @@ export function GameResult({
         </div>
       </CardContent>
     </Card>
+   </div>
   );
 }

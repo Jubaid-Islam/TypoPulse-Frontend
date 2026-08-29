@@ -132,3 +132,131 @@
 .dm-sans {
   font-family: var(--font-dm-sans), sans-serif;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.grid-layer {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(
+    ellipse 75% 65% at 50% 30%,
+    black 30%,
+    transparent 85%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 75% 65% at 50% 30%,
+    black 30%,
+    transparent 85%
+  );
+}
+
+.beam {
+  position: absolute;
+  top: -20%;
+  width: 1px;
+  height: 140%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(139, 92, 246, 0.5) 40%,
+    rgba(59, 130, 246, 0.4) 60%,
+    transparent
+  );
+  filter: blur(1px);
+}
+
+.beam-1 {
+  left: 22%;
+  animation: beam-move-1 9s ease-in-out infinite;
+}
+
+.beam-2 {
+  left: 68%;
+  animation: beam-move-2 12s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes beam-move-1 {
+  0%, 100% {
+    transform: translateX(0) scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(60px) scaleY(1.15);
+    opacity: 0.9;
+  }
+}
+
+@keyframes beam-move-2 {
+  0%, 100% {
+    transform: translateX(0) scaleY(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(-80px) scaleY(1.1);
+    opacity: 0.8;
+  }
+}
+
+.center-glow {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 60vw;
+  max-width: 700px;
+  height: 60vw;
+  max-height: 700px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.18),
+    transparent 70%
+  );
+  filter: blur(60px);
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+.edge-fade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 100% 60% at 50% 0%,
+    transparent 0%,
+    var(--background) 80%
+  );
+}
+
+@media (max-width: 768px) {
+  .beam {
+    display: none;
+  }
+  .center-glow {
+    filter: blur(40px);
+  }
+}

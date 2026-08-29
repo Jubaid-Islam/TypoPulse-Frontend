@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
+import { BackgroundAnimation } from "@/components/animation/animation";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -24,13 +25,17 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={`dark ${dmSans.variable} h-full antialiased`}
-    >
+      >
       <body
         className={cn(
-          "dm-sans min-h-full flex flex-col bg-background text-foreground",
+          "dm-sans min-h-full flex flex-col bg-background text-foreground relative",
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="relative z-10 flex-1 flex flex-col">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

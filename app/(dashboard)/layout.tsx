@@ -13,7 +13,9 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col w-full bg-background">
+<div>
+      <div className="flex min-h-screen flex-col w-full bg-background">
+
       <Header onMenuClick={() => setIsSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -21,5 +23,6 @@ export default function DashboardLayout({
       </main>
       <Footer />
     </div>
+</div>
   );
 }
