@@ -41,9 +41,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+   useEffect(() => {
+     let cancelled = false;
+
+     const load = async () => {
+       try {
+         setError(null);
+         const currentUser = await authService.getCurrentUser();
+         if (!cancelled) setUser(currentUser);
+       } catch (err) {
+         if (!cancelled) {
+           setError(err instanceof Error ? err.message : "Failed to fetch user");
+           setUser(null);
+         }
+       } finally {
+         if (!cancelled) setIsLoading(false);
+       }
+     };
+
+     load();
+     return () => {
+       cancelled = true;
+     };
+   }, []);
 
   // refresh user data
   const refetchUser = async () => {
