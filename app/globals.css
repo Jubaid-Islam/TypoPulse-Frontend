@@ -133,24 +133,11 @@
   font-family: var(--font-dm-sans), sans-serif;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .grid-layer {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px
-    ),
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(
@@ -192,7 +179,8 @@
 }
 
 @keyframes beam-move-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0) scaleY(1);
     opacity: 0.5;
   }
@@ -203,7 +191,8 @@
 }
 
 @keyframes beam-move-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0) scaleY(1);
     opacity: 0.4;
   }
@@ -232,7 +221,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
     transform: translateX(-50%) scale(1);
   }
@@ -246,10 +236,11 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 100% 60% at 50% 0%,
+    ellipse 100% 45% at 50% 0%,
     transparent 0%,
-    var(--background) 80%
+    var(--background) 50%
   );
+  opacity: 0.5;
 }
 
 @media (max-width: 768px) {
